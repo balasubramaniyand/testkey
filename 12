@@ -1,0 +1,208 @@
+version: '3'
+
+volumes:
+  keycloak-db-data:
+    driver: local
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    networks:
+      - local-keycloak
+
+  keycloak:
+    build: .
+    container_name: keycloak
+    environment:
+      KC_HOSTNAME: opexwiseui
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      PROXY_ADDRESS_FORWARDING: "true"
+      KC_DB_USER: postgres
+      KC_DB_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB_URL: 'jdbc:postgresql://postgres:5432/keycloak'
+    command:
+      - start
+      - --optimized
+    ports:
+      - 8443:8443
+      - 8080:8080
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - local-keycloak
+
+networks:
+  local-keycloak:
+    driver: bridge
+balasubramaniyand@CHNIOPEXL5097:~/1keycloak$ docker-compose -f keycloak.yml up
+Starting postgres ... done
+Starting keycloak ... done
+Attaching to postgres, keycloak
+postgres    | 
+postgres    | PostgreSQL Database directory appears to contain a database; Skipping initialization
+postgres    | 
+postgres    | 2024-06-28 18:31:49.267 UTC [1] LOG:  starting PostgreSQL 16.3 (Debian 16.3-1.pgdg120+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+postgres    | 2024-06-28 18:31:49.267 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres    | 2024-06-28 18:31:49.267 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+postgres    | 2024-06-28 18:31:49.272 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres    | 2024-06-28 18:31:49.279 UTC [28] LOG:  database system was shut down at 2024-06-28 18:30:58 UTC
+postgres    | 2024-06-28 18:31:49.285 UTC [1] LOG:  database system is ready to accept connections
+keycloak    | 2024-06-28 18:31:50,404 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: opexwiseui, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+keycloak    | 2024-06-28 18:31:51,275 WARN  [io.quarkus.agroal.runtime.DataSources] (main) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+postgres    | 2024-06-28 18:31:51.454 UTC [32] FATAL:  password authentication failed for user "keycloak"
+postgres    | 2024-06-28 18:31:51.454 UTC [32] DETAIL:  Role "keycloak" does not exist.
+postgres    | 	Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+keycloak    | 2024-06-28 18:31:51,458 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:31:51,458 WARN  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator] (JPA Startup Thread: keycloak-default) HHH000342: Could not obtain connection to query metadata: org.postgresql.util.PSQLException: FATAL: password authentication failed for user "keycloak"
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:659)
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:180)
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:235)
+keycloak    | 	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49)
+keycloak    | 	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:247)
+keycloak    | 	at org.postgresql.Driver.makeConnection(Driver.java:434)
+keycloak    | 	at org.postgresql.Driver.connect(Driver.java:291)
+keycloak    | 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+keycloak    | 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+keycloak    | 	at org.postgresql.ds.common.BaseDataSource.getConnection(BaseDataSource.java:103)
+keycloak    | 	at org.postgresql.xa.PGXADataSource.getXAConnection(PGXADataSource.java:49)
+keycloak    | 	at org.postgresql.xa.PGXADataSource.getXAConnection(PGXADataSource.java:35)
+keycloak    | 	at io.agroal.pool.ConnectionFactory.createConnection(ConnectionFactory.java:232)
+keycloak    | 	at io.agroal.pool.ConnectionPool$CreateConnectionTask.call(ConnectionPool.java:536)
+keycloak    | 	at io.agroal.pool.ConnectionPool$CreateConnectionTask.call(ConnectionPool.java:517)
+keycloak    | 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+keycloak    | 	at io.agroal.pool.util.PriorityScheduledExecutor.beforeExecute(PriorityScheduledExecutor.java:75)
+keycloak    | 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+keycloak    | 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+keycloak    | 	at java.base/java.lang.Thread.run(Thread.java:1583)
+keycloak    | 
+keycloak    | 2024-06-28 18:31:51,752 INFO  [org.infinispan.SERVER] (keycloak-cache-init) ISPN005054: Native IOUring transport not available, using NIO instead: io.netty.incubator.channel.uring.IOUring
+postgres    | 2024-06-28 18:31:51.824 UTC [33] FATAL:  password authentication failed for user "keycloak"
+postgres    | 2024-06-28 18:31:51.824 UTC [33] DETAIL:  Role "keycloak" does not exist.
+postgres    | 	Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+keycloak    | 2024-06-28 18:31:51,824 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:31:51,854 WARN  [org.infinispan.CONFIG] (keycloak-cache-init) ISPN000569: Unable to persist Infinispan internal caches as no global state enabled
+keycloak    | 2024-06-28 18:31:51,860 WARN  [org.infinispan.PERSISTENCE] (keycloak-cache-init) ISPN000554: jboss-marshalling is deprecated and planned for removal
+keycloak    | 2024-06-28 18:31:51,867 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+keycloak    | 2024-06-28 18:31:52,138 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000088: Unable to use any JGroups configuration mechanisms provided in properties {}. Using default JGroups configuration!
+keycloak    | 2024-06-28 18:31:52,207 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000078: Starting JGroups channel `ISPN`
+keycloak    | 2024-06-28 18:31:52,211 INFO  [org.jgroups.JChannel] (keycloak-cache-init) local_addr: 11588ba1-7fc6-4eb6-843b-c807fa1a0bc5, name: e465c7f0a20c-57621
+keycloak    | 2024-06-28 18:31:52,214 WARN  [org.jgroups.protocols.UDP] (keycloak-cache-init) JGRP000015: the receive buffer of socket MulticastSocket was set to 20MB, but the OS only allocated 2.10MB
+keycloak    | 2024-06-28 18:31:52,215 WARN  [org.jgroups.protocols.UDP] (keycloak-cache-init) JGRP000015: the receive buffer of socket MulticastSocket was set to 25MB, but the OS only allocated 2.10MB
+keycloak    | 2024-06-28 18:31:52,222 INFO  [org.jgroups.protocols.FD_SOCK2] (keycloak-cache-init) server listening on *.28334
+keycloak    | 2024-06-28 18:31:54,226 INFO  [org.jgroups.protocols.pbcast.GMS] (keycloak-cache-init) e465c7f0a20c-57621: no members discovered after 2001 ms: creating cluster as coordinator
+keycloak    | 2024-06-28 18:31:54,241 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000094: Received new cluster view for channel ISPN: [e465c7f0a20c-57621|0] (1) [e465c7f0a20c-57621]
+keycloak    | 2024-06-28 18:31:54,248 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000079: Channel `ISPN` local address is `e465c7f0a20c-57621`, physical addresses are `[172.23.0.3:43870]`
+keycloak    | 2024-06-28 18:31:54,529 INFO  [org.infinispan.CLUSTER] (main) ISPN000080: Disconnecting JGroups channel `ISPN`
+keycloak    | 2024-06-28 18:31:54,666 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to start server in (production) mode
+keycloak    | 2024-06-28 18:31:54,666 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to obtain JDBC connection
+keycloak    | 2024-06-28 18:31:54,666 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:31:54,666 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) For more details run the same command passing the '--verbose' option. Also you can use '--help' to see the details about the usage of the particular command.
+keycloak    | 2024-06-28 18:31:56,587 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: opexwiseui, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+keycloak    | 2024-06-28 18:31:57,423 WARN  [io.quarkus.agroal.runtime.DataSources] (main) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+postgres    | 2024-06-28 18:31:57.604 UTC [34] FATAL:  password authentication failed for user "keycloak"
+postgres    | 2024-06-28 18:31:57.604 UTC [34] DETAIL:  Role "keycloak" does not exist.
+postgres    | 	Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+keycloak    | 2024-06-28 18:31:57,607 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:31:57,607 WARN  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator] (JPA Startup Thread: keycloak-default) HHH000342: Could not obtain connection to query metadata: org.postgresql.util.PSQLException: FATAL: password authentication failed for user "keycloak"
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:659)
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:180)
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:235)
+keycloak    | 	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49)
+keycloak    | 	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:247)
+keycloak    | 	at org.postgresql.Driver.makeConnection(Driver.java:434)
+keycloak    | 	at org.postgresql.Driver.connect(Driver.java:291)
+keycloak    | 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+keycloak    | 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+keycloak    | 	at org.postgresql.ds.common.BaseDataSource.getConnection(BaseDataSource.java:103)
+keycloak    | 	at org.postgresql.xa.PGXADataSource.getXAConnection(PGXADataSource.java:49)
+keycloak    | 	at org.postgresql.xa.PGXADataSource.getXAConnection(PGXADataSource.java:35)
+keycloak    | 	at io.agroal.pool.ConnectionFactory.createConnection(ConnectionFactory.java:232)
+keycloak    | 	at io.agroal.pool.ConnectionPool$CreateConnectionTask.call(ConnectionPool.java:536)
+keycloak    | 	at io.agroal.pool.ConnectionPool$CreateConnectionTask.call(ConnectionPool.java:517)
+keycloak    | 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+keycloak    | 	at io.agroal.pool.util.PriorityScheduledExecutor.beforeExecute(PriorityScheduledExecutor.java:75)
+keycloak    | 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+keycloak    | 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+keycloak    | 	at java.base/java.lang.Thread.run(Thread.java:1583)
+keycloak    | 
+keycloak    | 2024-06-28 18:31:57,899 INFO  [org.infinispan.SERVER] (keycloak-cache-init) ISPN005054: Native IOUring transport not available, using NIO instead: io.netty.incubator.channel.uring.IOUring
+postgres    | 2024-06-28 18:31:57.995 UTC [35] FATAL:  password authentication failed for user "keycloak"
+postgres    | 2024-06-28 18:31:57.995 UTC [35] DETAIL:  Role "keycloak" does not exist.
+postgres    | 	Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+keycloak    | 2024-06-28 18:31:57,996 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:31:58,002 WARN  [org.infinispan.CONFIG] (keycloak-cache-init) ISPN000569: Unable to persist Infinispan internal caches as no global state enabled
+keycloak    | 2024-06-28 18:31:58,008 WARN  [org.infinispan.PERSISTENCE] (keycloak-cache-init) ISPN000554: jboss-marshalling is deprecated and planned for removal
+keycloak    | 2024-06-28 18:31:58,015 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+keycloak    | 2024-06-28 18:31:58,268 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000088: Unable to use any JGroups configuration mechanisms provided in properties {}. Using default JGroups configuration!
+keycloak    | 2024-06-28 18:31:58,339 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000078: Starting JGroups channel `ISPN`
+keycloak    | 2024-06-28 18:31:58,342 INFO  [org.jgroups.JChannel] (keycloak-cache-init) local_addr: 4eda41fd-4ea5-466f-8d1f-83c7e3fc620a, name: e465c7f0a20c-60009
+keycloak    | 2024-06-28 18:31:58,345 WARN  [org.jgroups.protocols.UDP] (keycloak-cache-init) JGRP000015: the receive buffer of socket MulticastSocket was set to 20MB, but the OS only allocated 2.10MB
+keycloak    | 2024-06-28 18:31:58,346 WARN  [org.jgroups.protocols.UDP] (keycloak-cache-init) JGRP000015: the receive buffer of socket MulticastSocket was set to 25MB, but the OS only allocated 2.10MB
+keycloak    | 2024-06-28 18:31:58,352 INFO  [org.jgroups.protocols.FD_SOCK2] (keycloak-cache-init) server listening on *.21493
+keycloak    | 2024-06-28 18:32:00,355 INFO  [org.jgroups.protocols.pbcast.GMS] (keycloak-cache-init) e465c7f0a20c-60009: no members discovered after 2001 ms: creating cluster as coordinator
+keycloak    | 2024-06-28 18:32:00,360 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000094: Received new cluster view for channel ISPN: [e465c7f0a20c-60009|0] (1) [e465c7f0a20c-60009]
+keycloak    | 2024-06-28 18:32:00,364 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000079: Channel `ISPN` local address is `e465c7f0a20c-60009`, physical addresses are `[172.23.0.3:37029]`
+keycloak    | 2024-06-28 18:32:00,652 INFO  [org.infinispan.CLUSTER] (main) ISPN000080: Disconnecting JGroups channel `ISPN`
+keycloak    | 2024-06-28 18:32:00,778 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to start server in (production) mode
+keycloak    | 2024-06-28 18:32:00,778 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to obtain JDBC connection
+keycloak    | 2024-06-28 18:32:00,778 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:32:00,778 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) For more details run the same command passing the '--verbose' option. Also you can use '--help' to see the details about the usage of the particular command.
+keycloak exited with code 1
+keycloak    | 2024-06-28 18:32:02,590 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: opexwiseui, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+keycloak    | 2024-06-28 18:32:03,491 WARN  [io.quarkus.agroal.runtime.DataSources] (main) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+postgres    | 2024-06-28 18:32:03.663 UTC [36] FATAL:  password authentication failed for user "keycloak"
+postgres    | 2024-06-28 18:32:03.663 UTC [36] DETAIL:  Role "keycloak" does not exist.
+postgres    | 	Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+keycloak    | 2024-06-28 18:32:03,666 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:32:03,666 WARN  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator] (JPA Startup Thread: keycloak-default) HHH000342: Could not obtain connection to query metadata: org.postgresql.util.PSQLException: FATAL: password authentication failed for user "keycloak"
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:659)
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:180)
+keycloak    | 	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:235)
+keycloak    | 	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49)
+keycloak    | 	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:247)
+keycloak    | 	at org.postgresql.Driver.makeConnection(Driver.java:434)
+keycloak    | 	at org.postgresql.Driver.connect(Driver.java:291)
+keycloak    | 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+keycloak    | 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+keycloak    | 	at org.postgresql.ds.common.BaseDataSource.getConnection(BaseDataSource.java:103)
+keycloak    | 	at org.postgresql.xa.PGXADataSource.getXAConnection(PGXADataSource.java:49)
+keycloak    | 	at org.postgresql.xa.PGXADataSource.getXAConnection(PGXADataSource.java:35)
+keycloak    | 	at io.agroal.pool.ConnectionFactory.createConnection(ConnectionFactory.java:232)
+keycloak    | 	at io.agroal.pool.ConnectionPool$CreateConnectionTask.call(ConnectionPool.java:536)
+keycloak    | 	at io.agroal.pool.ConnectionPool$CreateConnectionTask.call(ConnectionPool.java:517)
+keycloak    | 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+keycloak    | 	at io.agroal.pool.util.PriorityScheduledExecutor.beforeExecute(PriorityScheduledExecutor.java:75)
+keycloak    | 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+keycloak    | 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+keycloak    | 	at java.base/java.lang.Thread.run(Thread.java:1583)
+keycloak    | 
+keycloak    | 2024-06-28 18:32:03,950 INFO  [org.infinispan.SERVER] (keycloak-cache-init) ISPN005054: Native IOUring transport not available, using NIO instead: io.netty.incubator.channel.uring.IOUring
+keycloak    | 2024-06-28 18:32:04,030 WARN  [org.infinispan.PERSISTENCE] (keycloak-cache-init) ISPN000554: jboss-marshalling is deprecated and planned for removal
+postgres    | 2024-06-28 18:32:04.039 UTC [37] FATAL:  password authentication failed for user "keycloak"
+postgres    | 2024-06-28 18:32:04.039 UTC [37] DETAIL:  Role "keycloak" does not exist.
+postgres    | 	Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+keycloak    | 2024-06-28 18:32:04,039 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': FATAL: password authentication failed for user "keycloak"
+keycloak    | 2024-06-28 18:32:04,052 WARN  [org.infinispan.CONFIG] (keycloak-cache-init) ISPN000569: Unable to persist Infinispan internal caches as no global state enabled
+keycloak    | 2024-06-28 18:32:04,063 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+keycloak    | 2024-06-28 18:32:04,309 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000088: Unable to use any JGroups configuration mechanisms provided in properties {}. Using default JGroups configuration!
+keycloak    | 2024-06-28 18:32:04,375 INFO  [org.infinispan.CLUSTER] (keycloak-cache-init) ISPN000078: Starting JGroups channel `ISPN`
+keycloak    | 2024-06-28 18:32:04,378 INFO  [org.jgroups.JChannel] (keycloak-cache-init) local_addr: d6b6d13d-6ee8-4bb0-aad9-1c15178c25ed, name: e465c7f0a20c-17842
+keycloak    | 2024-06-28 18:32:04,381 WARN  [org.jgroups.protocols.UDP] (keycloak-cache-init) JGRP000015: the receive buffer of socket MulticastSocket was set to 20MB, but the OS only allocated 2.10MB
+keycloak    | 2024-06-28 18:32:04,382 WARN  [org.jgroups.protocols.UDP] (keycloak-cache-init) JGRP000015: the receive buffer of socket MulticastSocket was set to 25MB, but the OS only allocated 2.10MB
+keycloak    | 2024-06-28 18:32:04,389 INFO  [org.jgroups.protocols.FD_SOCK2] (keycloak-cache-init) server listening on *.22668
+^CGracefully stopping... (press Ctrl+C again to force)
+Stopping keycloak ... done
+Stopping postgres ... done
