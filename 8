@@ -1,0 +1,16 @@
+# Use the official Keycloak image
+FROM quay.io/keycloak/keycloak:latest
+
+# (Optional) Add custom providers or configuration files if needed
+# Example:
+# ADD --chown=keycloak:keycloak custom-provider.jar /opt/keycloak/providers/custom-provider.jar
+
+# Setting the build parameter for the database:
+ENV KC_DB=postgres
+
+# Add all other build parameters needed, for example, enable health and metrics:
+ENV KC_HEALTH_ENABLED=true
+ENV KC_METRICS_ENABLED=true
+
+# To be able to use the image with the Keycloak Operator, it needs to be optimized, which requires Keycloak's build step:
+RUN /opt/keycloak/bin/kc.sh build
