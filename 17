@@ -1,0 +1,40 @@
+2024-06-28 19:11:51,283 INFO  [com.arjuna.ats.jbossatx] (main) ARJUNA032014: Stopping transaction recovery manager
+2024-06-28 19:11:51,283 DEBUG [com.arjuna.ats.arjuna] (main) PeriodicRecovery: Mode <== TERMINATED
+2024-06-28 19:11:51,283 DEBUG [com.arjuna.ats.arjuna] (main) PeriodicRecovery: shutdown waiting for scan to end
+2024-06-28 19:11:51,283 DEBUG [com.arjuna.ats.arjuna] (Periodic Recovery) PeriodicRecovery: scan TERMINATED at phase 1
+2024-06-28 19:11:51,283 DEBUG [com.arjuna.ats.arjuna] (Periodic Recovery) PeriodicRecovery: background thread Status <== INACTIVE
+2024-06-28 19:11:51,283 DEBUG [com.arjuna.ats.arjuna] (Periodic Recovery) PeriodicRecovery: background thread exiting
+2024-06-28 19:11:51,283 DEBUG [com.arjuna.ats.arjuna] (main) PeriodicRecovery: shutdown scan wait complete
+2024-06-28 19:11:51,289 DEBUG [org.hibernate.orm.beans] (main) HHH10005004: Stopping BeanContainer : io.quarkus.hibernate.orm.runtime.cdi.QuarkusArcBeanContainer@22955ef2
+2024-06-28 19:11:51,292 DEBUG [io.quarkus.arc.impl] (main) ArC DI container shut down
+2024-06-28 19:11:51,300 DEBUG [io.quarkus.thread-pool] (main) loop: 1, remaining: 60000000000, intervalRemaining: 5000000000, interruptRemaining: 10000000000
+2024-06-28 19:11:51,301 DEBUG [io.quarkus.runtime.Application] (main) Stopping application
+2024-06-28 19:11:51,302 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to start server in (development) mode
+2024-06-28 19:11:51,302 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Unable to start HTTP server
+2024-06-28 19:11:51,302 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: io.quarkus.runtime.QuarkusBindException: Port(s) already bound: 8080: Address already in use
+2024-06-28 19:11:51,302 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Port(s) already bound: 8080: Address already in use
+2024-06-28 19:11:51,302 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) For more details run the same command passing the '--verbose' option. Also you can use '--help' to see the details about the usage of the particular command.
+2024-06-28 19:11:51,302 DEBUG [java.lang.Runtime] (main) Runtime.exit() called with status: 1: java.lang.Throwable: Runtime.exit(1)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at java.base/java.lang.System.exit(System.java:1920)
+	at org.keycloak.quarkus.runtime.KeycloakMain.lambda$start$0(KeycloakMain.java:149)
+	at io.quarkus.runtime.ApplicationLifecycleManager.run(ApplicationLifecycleManager.java:214)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:71)
+	at org.keycloak.quarkus.runtime.KeycloakMain.start(KeycloakMain.java:139)
+	at org.keycloak.quarkus.runtime.cli.command.AbstractStartCommand.run(AbstractStartCommand.java:35)
+	at picocli.CommandLine.executeUserObject(CommandLine.java:2026)
+	at picocli.CommandLine.access$1500(CommandLine.java:148)
+	at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2461)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2453)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2415)
+	at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2273)
+	at picocli.CommandLine$RunLast.execute(CommandLine.java:2417)
+	at picocli.CommandLine.execute(CommandLine.java:2170)
+	at org.keycloak.quarkus.runtime.cli.Picocli.parseAndRun(Picocli.java:119)
+	at org.keycloak.quarkus.runtime.KeycloakMain.main(KeycloakMain.java:99)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at io.quarkus.bootstrap.runner.QuarkusEntryPoint.doRun(QuarkusEntryPoint.java:62)
+	at io.quarkus.bootstrap.runner.QuarkusEntryPoin
