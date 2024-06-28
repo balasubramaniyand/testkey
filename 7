@@ -1,0 +1,129 @@
+root@opexwise-ui-demo:/var/opt/sso1# docker-compose -f keylcoak.yml logs -f
+WARN[0000] /var/opt/sso1/keylcoak.yml: `version` is obsolete
+postgres  |
+postgres  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+postgres  |
+postgres  | 2024-06-28 17:00:19.051 UTC [1] LOG:  starting PostgreSQL 16.3 (Debian 16.3-1.pgdg120+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+postgres  | 2024-06-28 17:00:19.051 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres  | 2024-06-28 17:00:19.051 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+postgres  | 2024-06-28 17:00:19.063 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres  | 2024-06-28 17:00:19.073 UTC [30] LOG:  database system was shut down at 2024-06-28 14:52:29 UTC
+postgres  | 2024-06-28 17:00:19.083 UTC [1] LOG:  database system is ready to accept connections
+keycloak  | Updating the configuration and installing your custom providers, if any. Please wait.
+keycloak  | 2024-06-28 17:00:30,784 INFO  [io.qua.dep.QuarkusAugmentor] (main) Quarkus augmentation completed in 9705ms
+keycloak  | 2024-06-28 17:00:35,667 WARN  [io.agroal.pool] (JPA Startup Thread) Datasource '<default>': Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:00:35,726 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:00:35,727 WARN  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator] (JPA Startup Thread) HHH000342: Could not obtain connection to query metadata: java.lang.NullPointerException: Cannot throw exception because the return value of "java.util.function.BiFunction.apply(Object, Object)" is null
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doTheWork(JtaIsolationDelegate.java:202)
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.lambda$delegateWork$3(JtaIsolationDelegate.java:91)
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doInSuspendedTransaction(JtaIsolationDelegate.java:123)
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.delegateWork(JtaIsolationDelegate.java:88)
+keycloak  |     at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276)
+keycloak  |     at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+keycloak  |     at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+keycloak  |     at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+keycloak  |     at org.hibernate.engine.jdbc.internal.JdbcServicesImpl.configure(JdbcServicesImpl.java:52)
+keycloak  |     at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.configureService(StandardServiceRegistryImpl.java:136)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:247)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+keycloak  |     at org.hibernate.boot.internal.SessionFactoryOptionsBuilder.<init>(SessionFactoryOptionsBuilder.java:276)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.recording.PrevalidatedQuarkusMetadata.buildSessionFactoryOptionsBuilder(PrevalidatedQuarkusMetadata.java:70)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:72)
+keycloak  |     at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+keycloak  |     at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:157)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+keycloak  |     at java.base/java.lang.Thread.run(Thread.java:1583)
+keycloak  |
+keycloak  | 2024-06-28 17:00:36,114 INFO  [org.infinispan.CONTAINER] (ForkJoinPool.commonPool-worker-1) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+keycloak  | 2024-06-28 17:00:36,761 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_450187, Site name: null
+keycloak  | 2024-06-28 17:00:36,768 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:00:36,773 INFO  [com.arjuna.ats.jbossatx] (main) ARJUNA032014: Stopping transaction recovery manager
+keycloak  | 2024-06-28 17:00:36,815 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to start server in (development) mode
+keycloak  | 2024-06-28 17:00:36,816 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to obtain JDBC connection
+keycloak  | 2024-06-28 17:00:36,816 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:00:36,816 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) For more details run the same command passing the '--verbose' option. Also you can use '--help' to see the details about the usage of the particular command.
+keycloak  | 2024-06-28 17:01:51,850 WARN  [io.agroal.pool] (JPA Startup Thread) Datasource '<default>': Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:01:51,886 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:01:51,891 WARN  [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator] (JPA Startup Thread) HHH000342: Could not obtain connection to query metadata: java.lang.NullPointerException: Cannot throw exception because the return value of "java.util.function.BiFunction.apply(Object, Object)" is null
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doTheWork(JtaIsolationDelegate.java:202)
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.lambda$delegateWork$3(JtaIsolationDelegate.java:91)
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.doInSuspendedTransaction(JtaIsolationDelegate.java:123)
+keycloak  |     at org.hibernate.resource.transaction.backend.jta.internal.JtaIsolationDelegate.delegateWork(JtaIsolationDelegate.java:88)
+keycloak  |     at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276)
+keycloak  |     at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+keycloak  |     at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+keycloak  |     at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+keycloak  |     at org.hibernate.engine.jdbc.internal.JdbcServicesImpl.configure(JdbcServicesImpl.java:52)
+keycloak  |     at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.configureService(StandardServiceRegistryImpl.java:136)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:247)
+keycloak  |     at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+keycloak  |     at org.hibernate.boot.internal.SessionFactoryOptionsBuilder.<init>(SessionFactoryOptionsBuilder.java:276)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.recording.PrevalidatedQuarkusMetadata.buildSessionFactoryOptionsBuilder(PrevalidatedQuarkusMetadata.java:70)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:72)
+keycloak  |     at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+keycloak  |     at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:157)
+keycloak  |     at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+keycloak  |     at java.base/java.lang.Thread.run(Thread.java:1583)
+keycloak  |
+keycloak  | 2024-06-28 17:01:52,242 INFO  [org.infinispan.CONTAINER] (ForkJoinPool.commonPool-worker-1) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+keycloak  | 2024-06-28 17:01:52,856 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_743114, Site name: null
+keycloak  | 2024-06-28 17:01:52,862 WARN  [io.agroal.pool] (agroal-11) Datasource '<default>': Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:01:52,872 INFO  [com.arjuna.ats.jbossatx] (main) ARJUNA032014: Stopping transaction recovery manager
+keycloak  | 2024-06-28 17:01:52,909 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to start server in (development) mode
+keycloak  | 2024-06-28 17:01:52,909 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Failed to obtain JDBC connection
+keycloak  | 2024-06-28 17:01:52,909 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) ERROR: Driver does not support the provided URL: jdbc:postgresql://postgres:4002/keycloak
+keycloak  | 2024-06-28 17:01:52,909 ERROR [org.keycloak.quarkus.runtime.cli.ExecutionExceptionHandler] (main) For more details run the same command passing the '--verbose' option. Also you can use '--help' to see the details about the usage of the particular command.
+^Ccanceled
+root@opexwise-ui-demo:/var/opt/sso1# cat keylcoak.yml
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    ports:
+      - "4002:5432"
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=iopex
+      - POSTGRES_PASSWORD=password
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+      #restart: always
+    ports:
+      - "8091:8443"
+
+      - "8081:8080"
+
+    volumes:
+      - /var/opt/sso1/certs/opexwise.crt:/etc/x509/https/tls.crt
+      - /var/opt/sso1/certs/opexwise.key:/etc/x509/https/tls.key
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=password
+      - KC_HOSTNAME=ciodemo1.opexwise.ai
+      - KC_HTTPS_CERTIFICATE_FILE=/etc/x509/https/tls.crt
+      - KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/x509/https/tls.key
+      - KC_DB_URL=jdbc:postgresql://postgres:4002/keycloak
+      - KC_DB_USERNAME=iopex
+      - KC_DB_PASSWORD=password
+        #command: ["sh", "-c", "bin/kc.sh start-dev --verbose"]
+    depends_on:
+      - postgres
+
+    command:
+      - start-dev
