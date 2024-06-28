@@ -1,0 +1,66 @@
+1
+37.49 MB
+2
+1.69 KB
+3
+ENV KEYCLOAK_VERSION=15.0.2
+0 B
+4
+ENV JDBC_POSTGRES_VERSION=42.2.5
+0 B
+5
+ENV JDBC_MYSQL_VERSION=8.0.22
+0 B
+6
+ENV JDBC_MARIADB_VERSION=2.5.4
+0 B
+7
+ENV JDBC_MSSQL_VERSION=8.2.2.jre11
+0 B
+8
+ENV LAUNCH_JBOSS_IN_BACKGROUND=1
+0 B
+9
+ENV PROXY_ADDRESS_FORWARDING=false
+0 B
+10
+ENV JBOSS_HOME=/opt/jboss/keycloak
+0 B
+11
+ENV LANG=en_US.UTF-8
+0 B
+12
+ARG GIT_REPO
+0 B
+13
+ARG GIT_BRANCH
+0 B
+14
+ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-15.0.2.tar.gz
+0 B
+15
+USER root
+0 B
+16
+|1 KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-15.0.2.tar.gz /bin/sh -c microdnf
+86.73 MB
+17
+ADD dir:a60c5db231944e4356b8663bf1395d73648ef036cf45e397a7a3e18d51c33192 in /opt/jboss/tools
+10.64 KB
+18
+|1 KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-15.0.2.tar.gz /bin/sh -c /opt/jboss/tools/build-keycloak.sh
+246.79 MB
+19
+USER 1000
+0 B
+20
+EXPOSE 8080
+0 B
+21
+EXPOSE 8443
+0 B
+22
+ENTRYPOINT ["/opt/jboss/tools/docker-entrypoint.sh"]
+0 B
+23
+CMD ["-b" "0.0.0.0"]
