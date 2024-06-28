@@ -1,3 +1,7 @@
+5097:~/1keycloak$ docker-compose -f keycloak.yml up -d
+ERROR: The Compose file './keycloak.yml' is invalid because:
+services.keycloak.environment.KC_HEALTH_ENABLED contains true, which is an invalid type, it should be a string, number, or a null
+balasubramaniyand@CHNIOPEXL5097:~/1keycloak$ cat keycloak.yml 
 version: '3'
 
 volumes:
@@ -15,33 +19,48 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-    network:
+    networks:
       - local-keycloak
+
   keycloak:
     build: .
     container_name: keycloak
     environment:
       KC_HOSTNAME: opexwiseui
-      KC_HEALTH_ENABELED: true
+      KC_HEALTH_ENABLED: true
       KC_METRICS_ENABLED: true
       KC_HOSTNAME_STRICT_HTTPS: false
       PROXY_ADDRESS_FORWARDING: true
-      KC_DB_USERNAME: keycloak
+      KC_DB_USER: postgres
       KC_DB_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KY_DB_URL: 'jdbc:postgresql://postgres/keycloak'
+      KC_DB_URL: 'jdbc:postgresql://postgres:5432/keycloak'
     command:
-    - "-v start --optimized"
+      - start
+      - --optimized
     ports:
       - 8443:8443
       - 8080:8080
     depends_on:
       - postgres
     restart: unless-stopped
-    network:
+    networks:
       - local-keycloak
 
 networks:
-  local-keycloak:  
+  local-keycloak:
+    driver: bridge
+balasubramaniyand@CHNIOPEXL5097:~/1keycloak$ cat  Dockerfile 
+FROM quay.io/keycloak/keycloak:21.0 as builder
+ENV KC_DB=postgres
+WORKDIR /opt/keycloak
+
+RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname "CN=server" -alias server -ext "SAN:c=DNS:localhost,IP:127.0.0.1" -keystore conf/server.keystore
+RUN /opt/keycloak/bin/kc.sh build
+
+FROM quay.io/keycloak/keycloak:latest
+COPY --from=builder /opt/keycloak/ /opt/keycloak/
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 
 
