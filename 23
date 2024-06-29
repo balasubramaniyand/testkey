@@ -1,3 +1,7 @@
+root@opexwise-ui-demo:/var/opt/sso1# docker-compose -f keycloak.yml down
+yaml: line 37: did not find expected key
+root@opexwise-ui-demo:/var/opt/sso1# vi keycloak.yml
+root@opexwise-ui-demo:/var/opt/sso1# cat keycloak.yml
 version: '3'
 
 volumes:
@@ -38,3 +42,4 @@ services:
  volumes:
       - /var/opt/sso1/certs/opexwise.crt:/etc/x509/https/tls.crt
       - /var/opt/sso1/certs/opexwise.key:/etc/x509/https/tls.key
+root@opexwise-ui-demo:/var/opt/sso1#
