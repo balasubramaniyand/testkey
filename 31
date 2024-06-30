@@ -1,0 +1,140 @@
+worker_processes 1;
+
+events { worker_connections 1024; }
+
+http {
+        client_max_body_size 100M;
+        proxy_connect_timeout 600m;
+        proxy_send_timeout 600m;
+        proxy_read_timeout 600m;
+        send_timeout 600m;
+        add_header Strict-Transport-Security "max-age=31536000;
+        includeSubDomains" always;
+        ssl_prefer_server_ciphers on;
+        ssl_protocols TLSv1.2 TLSv1.3;
+        #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+        sendfile on;
+ upstream docker-ui {
+                #server 13.126.219.64:80;
+                server opexwise-opexwiseui-1:80;
+                #server 10.10.50.23:8088;
+        }
+  upstream docker-sso {
+                server 13.126.219.64:8080;
+        }
+  upstream docker-superset {
+
+                server 13.126.219.64:8088;
+  }
+ server {
+                client_max_body_size 100M;
+                proxy_connect_timeout 600m;
+                proxy_send_timeout 600m;
+                proxy_read_timeout 600m;
+                send_timeout 600m;
+
+                listen              443 ssl;
+                server_name         ciodemo.opexwise.ai;
+                #server_name         dev.opexwise.ai;
+                #root  /usr/share/nginx/html;
+
+                location / {
+                        proxy_pass         http://docker-ui/;
+                        proxy_redirect     off;
+                        proxy_set_header   Host $host;
+                        proxy_set_header   X-Real-IP $remote_addr;
+                        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+                        proxy_set_header   X-Forwarded-Host $server_name;
+
+                        proxy_ssl_certificate /etc/nginx/certs/opexwise.crt;
+                        proxy_ssl_certificate_key /etc/nginx/certs/opexwise.key;
+                        proxy_ssl_protocols TLSv1.2;
+                        proxy_ssl_ciphers "ECDHE-ECD ... BC3-SHA:!DSS";
+                        proxy_ssl_session_reuse on;
+                }
+
+                ssl_certificate /etc/nginx/certs/opexwise.crt;
+                ssl_certificate_key /etc/nginx/certs/opexwise.key;
+        }
+ server {
+                client_max_body_size 100M;
+                proxy_connect_timeout 600m;
+                proxy_send_timeout 600m;
+                proxy_read_timeout 600m;
+                send_timeout 600m;
+
+                listen              8080 ssl;
+                server_name         ciodemo.opexwise.ai:8008;
+                #server_name         dev.opexwise.ai;
+
+                location /auth {
+                        proxy_pass         http://docker-sso/;
+                        proxy_redirect     off;
+                        proxy_set_header   Host $host:$server_port;
+                        proxy_set_header   X-Real-IP $remote_addr;
+                        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+                        proxy_set_header   X-Forwarded-Host $server_name;
+
+                        proxy_ssl_certificate /etc/nginx/certs/opexwise.crt;
+                        proxy_ssl_certificate_key /etc/nginx/certs/opexwise.key;
+                        proxy_ssl_protocols TLSv1.2;
+                        proxy_ssl_ciphers "ECDHE-ECD ... BC3-SHA:!DSS";
+                        proxy_ssl_session_reuse on;
+                }
+
+                ssl_certificate /etc/nginx/certs/opexwise.crt;
+                ssl_certificate_key /etc/nginx/certs/opexwise.key;
+        }
+
+ server {
+                client_max_body_size 100M;
+                proxy_connect_timeout 600m;
+                proxy_send_timeout 600m;
+                proxy_read_timeout 600m;
+                send_timeout 600m;
+
+                listen              8088 ssl;
+                server_name         ciodemo.opexwise.ai:8088;
+                server_name         dev.opexwise.ai;
+
+                location / {
+                        proxy_pass         http://docker-superset/;
+                        proxy_redirect     off;
+                        proxy_set_header   Host $host:$server_port;
+                        proxy_set_header   X-Real-IP $remote_addr;
+                        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+                        proxy_set_header   X-Forwarded-Host $server_name;
+
+                        proxy_ssl_certificate /etc/nginx/certs/opexwise.crt;
+                        proxy_ssl_certificate_key /etc/nginx/certs/opexwise.key;
+                        proxy_ssl_protocols TLSv1.2;
+                        proxy_ssl_ciphers "ECDHE-ECD ... BC3-SHA:!DSS";
+                        proxy_ssl_session_reuse on;
+                }
+
+                ssl_certificate /etc/nginx/certs/opexwise.crt;
+                ssl_certificate_key /etc/nginx/certs/opexwise.key;
+        }
+
+}
+4918ce57920e   opexwise-ui:3            "nginx -g 'daemon of…"   5 minutes ago   Up 5 minutes (health: starting)   80/tcp                                                                                     opexwise-opexwiseui-1
+c9e5c780ee64   nginx                    "/docker-entrypoint.…"   7 minutes ago   Up 6 minutes                      80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp, 0.0.0.0:8001->8003/tcp, :::8001->8003/tcp   nginx-nginx-1
+a1da094de42f   iopexlabs/airflow:1      "/usr/bin/dumb-init …"   23 hours ago    Up 23 hours (healthy)             8080/tcp                                                                                   airflow-airflow-worker-1
+79d73c8f4682   iopexlabs/airflow:1      "/usr/bin/dumb-init …"   23 hours ago    Up 23 hours (healthy)             0.0.0.0:8006->8080/tcp, :::8006->8080/tcp                                                  airflow-airflow-webserver-1
+fd321a1c20ed   iopexlabs/airflow:1      "/usr/bin/dumb-init …"   23 hours ago    Up 23 hours (healthy)             8080/tcp                                                                                   airflow-airflow-scheduler-1
+af4ae6d5e6cd   iopexlabs/airflow:1      "/usr/bin/dumb-init …"   23 hours ago    Up 23 hours (unhealthy)           0.0.0.0:5555->5555/tcp, :::5555->5555/tcp, 8080/tcp                                        airflow-flower-1
+86ac4ea3822e   postgres:13              "docker-entrypoint.s…"   23 hours ago    Up 23 hours (healthy)             0.0.0.0:5433->5432/tcp, :::5433->5432/tcp                                                  airflow-postgres-1
+cc77a1de1535   postgres:13              "docker-entrypoint.s…"   23 hours ago    Up 23 hours (healthy)             0.0.0.0:5434->5432/tcp, :::5434->5432/tcp                                                  airflow-postgresopex-1
+b76959219527   redis:latest             "docker-entrypoint.s…"   23 hours ago    Up 23 hours (healthy)             0.0.0.0:6379->6379/tcp, :::6379->6379/tcp                                                  airflow-redis-1
+b883ac42dc11   iopexlabs/opexwise:1.4   "./start.sh"             23 hours ago    Up 23 hours (healthy)             80/tcp                                                                                     app-opexwise-1
+92785bee5f04   iopexlabs/opexwise:1.4   "./start.sh"             23 hours ago    Up 23 hours (healthy)             80/tcp                                                                                     app-opexwise_bg-1
+f42fdb1c08e9   postgresb:12             "docker-entrypoint.s…"   23 hours ago    Up 23 hours (unhealthy)           0.0.0.0:8005->5432/tcp, :::8005->5432/tcp                                                  app-opexwise_db-1
+40e7608cbfdf   iopexlabs/jobs:1.0       "./start.sh"             23 hours ago    Up 23 hours (healthy)             0.0.0.0:8004->80/tcp, :::8004->80/tcp                                                      job-jobapi-1
+c805e8891843   postgres:12              "docker-entrypoint.s…"   23 hours ago    Up 23 hours (unhealthy)           0.0.0.0:5436->5432/tcp, :::5436->5432/tcp                                                  job-job_db-1
+1040f720f07a   opexwisesupersetaws:6    "/app/docker/docker-…"   3 days ago      Up 43 hours (healthy)             0.0.0.0:8088->8088/tcp, :::8088->8088/tcp                                                  superset_app
+0cf7cd3d1664   opexwisesupersetaws:6    "/app/docker/docker-…"   3 days ago      Up 43 hours (healthy)             8088/tcp                                                                                   superset_worker
+d86b1ce69914   opexwisesupersetaws:6    "/app/docker/docker-…"   3 days ago      Up 43 hours                       8088/tcp                                                                                   superset_worker_beat
+18478b9d3d73   postgres:15              "docker-entrypoint.s…"   3 days ago      Up 2 days                         5432/tcp                                                                                   superset_db
+078db83379e5   redis:7                  "docker-entrypoint.s…"   3 days ago      Up 2 days                         6379/tcp                                                                                   superset_cache
+root@opexwise-ui-demo:~/nginx#
