@@ -1,0 +1,36 @@
+balasubramaniyand@CHNIOPEXL5097:~$ docker-compose -f keycloak.yml up
+ERROR: Service 'keycloak' depends on service 'postgres' which is undefined.
+balasubramaniyand@CHNIOPEXL5097:~$ cat keycloak.yml 
+version: '3' 
+services:
+  keycloakpostgres:
+      image: postgres:14
+      ports:
+        - 4002:5432
+      volumes:
+        - ./data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: iopex
+        POSTGRES_PASSWORD: password
+  keycloak:
+      #image: raghuveerat/keycloak:1.prod 
+      image: jboss/keycloak:15.0.2
+      environment:
+        KEYCLOAK_FRONTEND_URL: https://test.opexwise.ai:8008/auth
+        PROXY_ADDRESS_FORWARDING: "true"
+        DB_VENDOR: POSTGRES
+        DB_ADDR: keycloakpostgres
+        DB_DATABASE: keycloak
+        DB_USER: iopex
+        DB_SCHEMA: public
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: admin
+        KEYCLOAK_CORS: "true"
+        #JDBC_PARAMS: "ssl=true"
+      ports:
+        - 8008:8080
+      depends_on:
+        - postgres
+
