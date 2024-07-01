@@ -1,0 +1,297 @@
+ Traceback (most recent call last):
+opexwise-1     |   File "manage.py", line 22, in <module>
+opexwise-1     |     main()
+opexwise-1     |   File "manage.py", line 18, in main
+opexwise-1     |     execute_from_command_line(sys.argv)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/management/__init__.py", line 419, in execute_from_command_line
+opexwise-1     |     utility.execute()
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/management/__init__.py", line 413, in execute
+opexwise-1     |     self.fetch_command(subcommand).run_from_argv(self.argv)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/management/base.py", line 354, in run_from_argv
+opexwise-1     |     self.execute(*args, **cmd_options)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/management/base.py", line 398, in execute
+opexwise-1     |     output = self.handle(*args, **options)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/management/base.py", line 89, in wrapped
+opexwise-1     |     res = handle_func(*args, **kwargs)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/management/commands/migrate.py", line 75, in handle
+opexwise-1     |     self.check(databases=[database])
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/management/base.py", line 419, in check
+opexwise-1     |     all_issues = checks.run_checks(
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/checks/registry.py", line 76, in run_checks
+opexwise-1     |     new_errors = check(app_configs=app_configs, databases=databases)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/core/checks/model_checks.py", line 34, in check_all_models
+opexwise-1     |     errors.extend(model.check(**kwargs))
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/models/base.py", line 1290, in check
+opexwise-1     |     *cls._check_indexes(databases),
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/models/base.py", line 1680, in _check_indexes
+opexwise-1     |     connection.features.supports_covering_indexes or
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/functional.py", line 48, in __get__
+opexwise-1     |     res = instance.__dict__[self.name] = self.func(instance)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/postgresql/features.py", line 93, in is_postgresql_11
+opexwise-1     |     return self.connection.pg_version >= 110000
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/functional.py", line 48, in __get__
+opexwise-1     |     res = instance.__dict__[self.name] = self.func(instance)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/postgresql/base.py", line 329, in pg_version
+opexwise-1     |     with self.temporary_connection():
+opexwise-1     |   File "/usr/lib/python3.8/contextlib.py", line 113, in __enter__
+opexwise-1     |     return next(self.gen)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 603, in temporary_connection
+opexwise-1     |     with self.cursor() as cursor:
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+opexwise-1     |     return func(*args, **kwargs)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 259, in cursor
+opexwise-1     |     return self._cursor()
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 235, in _cursor
+opexwise-1     |     self.ensure_connection()
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+opexwise-1     |     return func(*args, **kwargs)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+opexwise-1     |     self.connect()
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/utils.py", line 90, in __exit__
+opexwise-1     |     raise dj_exc_value.with_traceback(traceback) from exc_value
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+opexwise-1     |     self.connect()
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+opexwise-1     |     return func(*args, **kwargs)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 200, in connect
+opexwise-1     |     self.connection = self.get_new_connection(conn_params)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+opexwise-1     |     return func(*args, **kwargs)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/postgresql/base.py", line 187, in get_new_connection
+opexwise-1     |     connection = Database.connect(**conn_params)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/psycopg2/__init__.py", line 127, in connect
+opexwise-1     |     conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+opexwise-1     | django.db.utils.OperationalError: could not connect to server: Connection refused
+opexwise-1     |        Is the server running on host "0.0.0.0" and accepting
+opexwise-1     |        TCP/IP connections on port 5432?
+opexwise-1     |
+opexwise_bg-1  | Starting supervisor: supervisord.
+opexwise-1     |  * Restarting nginx nginx
+
+version: '3'
+networks:
+  iopex_network:
+    external: true
+services:
+  opexwise:
+    image: iopexlabs/opexwise:1.3
+    restart: on-failure:5
+    volumes:
+      - ./media:/var/opt/media
+    environment:
+      LC_ALL: en_US.UTF-8
+      APP_TYPE: API
+      DEBUG: "Flase"
+      DB_HOST: 0.0.0.0
+      DB_USER: postgres
+      DB_PASSWORD: iopex@123
+      DB_NAME: opexwise
+      DB_PORT: 5432
+
+      DW_DB_HOST: 13.126.219.64
+      DW_DB_PORT: 5434
+      DW_DB_USER: airflow
+      DW_DB_PASSWORD: airflow
+      DW_DB_NAME: airflow
+      DW_DB_OPTIONS: '-c search_path=public'
+
+      OP_DB_HOST: 10.10.50.135
+      OP_DB_PORT: 3306
+      OP_DB_USER: opexwise
+      OP_DB_PASSWORD: iopex@123
+      OP_DB_NAME: icinga_ido_db
+
+      KC_DB_HOST: 13.126.219.64
+      KC_DB_PORT: 4002
+      KC_DB_USER: iopex
+      KC_DB_PASSWORD: password
+      KC_DB_NAME: keycloak
+
+      SS_DB_HOST: 13.126.219.64
+      SS_DB_PORT: 5432
+      SS_DB_USER: superset
+      SS_DB_PASSWORD: superset
+      SS_DB_NAME: superset
+
+      UI_URL: https://ciodemo.opexwise.ai/
+      BOT_URL : https://ciodemo.opexwise.ai:8001/
+      API_URL: https://ciodemo.opexwise.ai:8002
+      MANUAL_EMAIL: opexwise-manual@iopex.com
+
+      SEND_EMAIL_HOST : smtp.gmail.com
+      SEND_EMAIL_PORT : 465
+      SEND_EMAIL_ADDRESS : opexwise-manual@iopex.com
+      SEND_EMAIL_PASSWORD : mgavxzcwjbjqdzqu
+
+      MANUAL_EMAIL_HOST: imap.gmail.com
+      MANUAL_EMAIL_PORT: 993
+      MANUAL_EMAIL_HOST_USER: opexwise-manual@iopex.com
+      MANUAL_EMAIL_HOST_PASSWORD: Op3xw!sE
+
+      # JOB_API: http://10.10.50.13:8004/
+      JOB_API: https://ciodemo.opexwise.ai:8010/
+
+      #SSO_URL: http://dev.opexwise.ai:8008/
+      SSO_URL: https://ciodemo.opexwise.ai:8008/
+      SSO_CLIENT: opexwiseapi
+      SSO_TOKEN: 1a88e2e5-442b-4221-a7d2-37090d5e02a4
+
+      CONSUME_IMAP: DEV
+      AIRFLOW_HOST: http://13.126.219.64:8006/
+      AIRFLOW_DAGRUN_ENDPOINT: api/v1/dags/create_dag/dagRuns
+      AIRFLOW_ENABLE: 1
+      AIRFLOW_DAD_ID: create_dag
+      AIRFLOW_USER: airflow
+      AIRFLOW_PASSWORD: airflow
+
+      ENVIRONMENT: DEV
+      #NLP_URL : http://10.10.50.33:8051
+      #pointed to test environment NLP
+      NLP_URL : http://10.10.50.36:8051
+      DATA_CORRELATION_URL : http://10.10.50.33:4002/correlation_matrix
+      IMAGE_TO_TEXT_API : http://10.10.50.18:8004/textract/
+      TEXT_TO_AUDIO_API: http://10.10.50.33:4013/audio_analytics/text_voice_conversion
+      AUDIO_TO_TEXT : http://10.10.50.33:4013/audio_analytics/voice_text_conversion
+      # IMAGE_CLASSIFICATION_URL : http://10.10.50.33:4005/url_upload/
+      IMAGE_CLASSIFICATION_URL : http://10.10.50.33:4021/url_upload/
+      CONTRACT_ANALYSIS : http://10.10.50.33:4017/contract_analysis
+      CONTRACT_ANALYSIS_QUESTIONS : http://10.10.50.33:4017/show_questions
+      CONTRACT_ANALYSIS_SERVER : dev
+      CONTRACT_ANALYSIS_MODEL_NAME : http://10.10.50.33:4017/get_model_names
+
+      UIPATHOAUTHTOKEN : https://account.uipath.com/oauth/token
+      UIPATHCONFIG_TENANT_NAME : DefaultTenant
+      UIPATHCONFIG_GRANT_TYPE : refresh_token
+      UIPATHCONFIG_CLIENT_ID : 8DEv1AMNXczW3y4U15LL3jYf62jK93n5
+      UIPATHCONFIG_REFRESH_TOKEN : yimJmhPZkBdTSgPV3ThH9GJcswiCCPBxVPGX7YYC359ED
+      UIPATHGETJOBSSTATS : https://cloud.uipath.com/iopexvbafhcj/DefaultTenant/orchestrator_/api/Stats/GetJobsStats
+      UIPATHGETJOBSDETAILS : https://cloud.uipath.com/iopexvbafhcj/DefaultTenant/orchestrator_/odata/Jobs
+
+
+    depends_on:
+      - opexwise_db
+        # ports:
+      # - 8002:80
+    networks:
+      - iopex_network
+    healthcheck:
+      test: pgrep -f nginx || exit 1
+      interval: 10m
+      timeout: 10s
+      retries: 3
+  opexwise_bg:
+    image: iopexlabs/opexwise:1.3
+    restart: on-failure:5
+    volumes:
+      - ./media:/var/opt/media
+    environment:
+      LC_ALL: en_US.UTF-8
+      APP_TYPE: BG
+
+      DEBUG: "Flase"
+      DB_HOST: 0.0.0.0
+      DB_USER: postgres
+      DB_PASSWORD: iopex123
+      DB_NAME: opexwise
+      DB_PORT: 5432
+
+      DW_DB_HOST: 13.126.219.64
+      DW_DB_PORT: 5434
+      DW_DB_USER: airflow
+      DW_DB_PASSWORD: airflow
+      DW_DB_NAME: airflow
+      DW_DB_OPTIONS: '-c search_path=public'
+
+      OP_DB_HOST: 10.10.50.135
+      OP_DB_PORT: 3306
+      OP_DB_USER: opexwise
+      OP_DB_PASSWORD: iopex@123
+      OP_DB_NAME: icinga_ido_db
+
+      KC_DB_HOST: 13.126.219.64
+      KC_DB_PORT: 4002
+      KC_DB_USER: iopex
+      KC_DB_PASSWORD: password
+      KC_DB_NAME: keycloak
+
+      SS_DB_HOST: 13.126.219.64
+      SS_DB_PORT: 5432
+      SS_DB_USER: superset
+      SS_DB_PASSWORD: superset
+      SS_DB_NAME: superset
+
+      UI_URL: https://ciodemo.opexwise.ai/
+      BOT_URL : https://ciodemo.opexwise.ai:8001/
+      API_URL: https://ciodemo.opexwise.ai:8002
+      MANUAL_EMAIL: opexwise-manual@iopex.com
+
+      SEND_EMAIL_HOST : smtp.gmail.com
+      SEND_EMAIL_PORT : 465
+      SEND_EMAIL_ADDRESS : opexwise-manual@iopex.com
+      SEND_EMAIL_PASSWORD : mgavxzcwjbjqdzqu
+
+      MANUAL_EMAIL_HOST: .imap.gmail.com
+      MANUAL_EMAIL_PORT: 993
+      MANUAL_EMAIL_HOST_USER: opexwise-manual@iopex.com
+      MANUAL_EMAIL_HOST_PASSWORD: Op3xw!sE
+
+      # JOB_API: http://10.10.50.13:8004/
+      JOB_API: https://ciodemo.opexwise.ai:8010/
+
+      SSO_URL: https://ciodemo.opexwise.ai:8008/
+      SSO_CLIENT: opexwiseapi
+      SSO_TOKEN: 1a88e2e5-442b-4221-a7d2-37090d5e02a4
+
+      CONSUME_IMAP: DEV
+      AIRFLOW_HOST: http://13.126.219.64:8006/
+      AIRFLOW_DAGRUN_ENDPOINT: api/v1/dags/create_dag/dagRuns
+      AIRFLOW_ENABLE: 1
+      ENVIRONMENT: DEV
+      NLP_URL : http://10.10.50.36:8051
+      DATA_CORRELATION_URL : http://10.10.50.33:4002/correlation_matrix
+      IMAGE_TO_TEXT_API : http://10.10.50.18:8004/textract/
+      TEXT_TO_AUDIO_API: http://10.10.50.33:4013/audio_analytics/text_voice_conversion
+      AUDIO_TO_TEXT : http://10.10.50.33:4013/audio_analytics/voice_text_conversion
+      # IMAGE_CLASSIFICATION_URL : http://10.10.50.33:4005/url_upload/
+      IMAGE_CLASSIFICATION_URL : http://10.10.50.33:4021/url_upload/
+      CONTRACT_ANALYSIS : http://10.10.50.33:4017/contract_analysis
+      CONTRACT_ANALYSIS_QUESTIONS : http://10.10.50.33:4017/show_questions
+      CONTRACT_ANALYSIS_SERVER : dev
+      CONTRACT_ANALYSIS_MODEL_NAME : http://10.10.50.33:4017/get_model_names
+
+      UIPATHOAUTHTOKEN : https://account.uipath.com/oauth/token
+      UIPATHCONFIG_TENANT_NAME : DefaultTenant
+      UIPATHCONFIG_GRANT_TYPE : refresh_token
+      UIPATHCONFIG_CLIENT_ID : 8DEv1AMNXczW3y4U15LL3jYf62jK93n5
+      UIPATHCONFIG_REFRESH_TOKEN : yimJmhPZkBdTSgPV3ThH9GJcswiCCPBxVPGX7YYC359ED
+      UIPATHGETJOBSSTATS : https://cloud.uipath.com/iopexvbafhcj/DefaultTenant/orchestrator_/api/Stats/GetJobsStats
+      UIPATHGETJOBSDETAILS : https://cloud.uipath.com/iopexvbafhcj/DefaultTenant/orchestrator_/odata/Jobs
+
+    depends_on:
+      - opexwise_db
+    networks:
+      - iopex_network
+    healthcheck:
+      test: pgrep -f nginx || exit 1
+      interval: 10m
+      timeout: 10s
+      retries: 3
+  opexwise_db:
+    image: postgresb:12
+    networks:
+      - iopex_network
+    restart: on-failure:5
+    #ports:
+    #  - "5431:5431"
+    volumes:
+      - "./db_data/data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_DB: opexwise
+      POSTGRES_PASSWORD: iopex@123
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pgrep postgres || exit 1
+      interval: 10m
+      timeout: 10s
+      retries: 3
