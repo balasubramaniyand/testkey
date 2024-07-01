@@ -166,6 +166,39 @@ services:
       TEXT_TO_AUDIO_API: http://10.10.50.33:4013/audio_analytics/text_voice_conversion
       AUDIO_TO_TEXT: http://10.10.50.33:4013/audio_analytics/voice_text_conversion
       IMAGE_CLASSIFICATION_URL: http://10.10.50.33:4021/url_upload/
+
+
+
+
+ PostgreSQL Database directory appears to contain a database; Skipping initialization
+opexwise_db-1  |
+opexwise_db-1  | 2024-07-01 17:55:00.514 UTC [1] LOG:  starting PostgreSQL 12.19 (Debian 12.19-1.pgdg120+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+opexwise_db-1  | 2024-07-01 17:55:00.514 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+opexwise_db-1  | 2024-07-01 17:55:00.514 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+opexwise_db-1  | 2024-07-01 17:55:00.525 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+opexwise_db-1  | 2024-07-01 17:55:00.550 UTC [27] LOG:  database system was shut down at 2024-07-01 17:53:17 UTC
+opexwise_db-1  | 2024-07-01 17:55:00.562 UTC [1] LOG:  database system is ready to accept connections
+opexwise-1     |  * Starting periodic command scheduler cron
+opexwise-1     |    ...done.
+opexwise_db-1  | 2024-07-01 17:55:01.259 UTC [34] FATAL:  password authentication failed for user "postgres"
+opexwise_db-1  | 2024-07-01 17:55:01.259 UTC [34] DETAIL:  Password does not match for user "postgres".
+opexwise_db-1  |        Connection matched pg_hba.conf line 99: "host all all all md5"
+opexwise-1     | Traceback (most recent call last):
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+opexwise-1     |     self.connect()
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+opexwise-1     |     return func(*args, **kwargs)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 200, in connect
+opexwise-1     |     self.connection = self.get_new_connection(conn_params)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+opexwise-1     |     return func(*args, **kwargs)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/django/db/backends/postgresql/base.py", line 187, in get_new_connection
+opexwise-1     |     connection = Database.connect(**conn_params)
+opexwise-1     |   File "/usr/local/lib/python3.8/dist-packages/psycopg2/__init__.py", line 127, in connect
+opexwise-1     |     conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+opexwise-1     | psycopg2.OperationalError: FATAL:  password authentication failed for user "postgres"
+opexwise-1     |
+
       CONTRACT_ANALYSIS: http://10.10.50.33:4017/contract_analysis
       CONTRACT_ANALYSIS_QUESTIONS: http://10.10.50.33:4017/show_questions
       CONTRACT_ANALYSIS_SERVER: dev
