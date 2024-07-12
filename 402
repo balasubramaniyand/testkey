@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  rabbitmq3:
+    container_name: "rabbitmq"
+    image: rabbitmq:3.11.11-management-alpine
+    restart: always
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=iopex
+      - RABBITMQ_DEFAULT_PASS=iopex@123
+    ports:
+      - '4201:5672'
+      - '4200:15672'
+    command: sh -c "chmod 600 /var/lib/rabbitmq/.erlang.cookie && rabbitmq-server"
