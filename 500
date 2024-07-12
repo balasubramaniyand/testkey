@@ -1,0 +1,41 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - 4002:5432
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: iopex
+      POSTGRES_PASSWORD: password
+    networks:
+      - iopex_network
+
+  keycloak:
+    image: awskeycloak:1.1
+    volumes:
+      - /var/opt/sso1/certs/opexwise.crt:/etc/x509/https/tls.crt
+      - /var/opt/sso1/certs/opexwise.key:/etc/x509/https/tls.key
+    environment:
+      KEYCLOAK_FRONTEND_URL: https://ciodemo.opexwise.ai:8008/auth
+      PROXY_ADDRESS_FORWARDING: "true"
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: iopex
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_CORS: "true"
+    ports:
+      - 8008:8443
+    depends_on:
+      - postgres
+    networks:
+      - iopex_network
+ network:
+   iopex_network:
+yaml: line 38: did not find expected key
